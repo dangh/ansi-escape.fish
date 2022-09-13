@@ -42,9 +42,9 @@ function ansi-escape --description 'Print message with ansi escape'
     set --query _flag_brcyan && set on "$on;96" && set off "$off;39"
     set --query _flag_brwhite && set on "$on;97" && set off "$off;39"
   end
-  test -n "$on" && printf '\x1b[%sm' (string sub --start 2 -- $on)
+  not set --query NO_COLOR && test -n "$on" && printf '\x1b[%sm' (string sub --start 2 -- $on)
   echo -n $argv
-  test -n "$off" && printf '\x1b[%sm' (string sub --start 2 -- $off)
+  not set --query NO_COLOR && test -n "$off" && printf '\x1b[%sm' (string sub --start 2 -- $off)
 end
 
 for flag in background bold dim italics reverse underline black red green yellow blue magenta cyan white brblack brred brgreen bryellow brblue brmagenta brcyan brwhite
