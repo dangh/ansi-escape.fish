@@ -1,5 +1,5 @@
 function ansi-escape --description 'Print message with ansi escape'
-  argparse --ignore-unknown b/background o/bold d/dim i/italics r/reverse u/underline black red green yellow blue magenta cyan white brblack brred brgreen bryellow brblue brmagenta brcyan brwhite -- $argv
+  argparse --ignore-unknown b/background o/bold d/dim h/hidden i/italics r/reverse s/strikethrough u/underline black red green yellow blue magenta cyan white brblack brred brgreen bryellow brblue brmagenta brcyan brwhite -- $argv
   set --local on
   set --local off
   set --query _flag_bold && set on "$on;1" && set off "$off;22"
@@ -7,6 +7,8 @@ function ansi-escape --description 'Print message with ansi escape'
   set --query _flag_italics && set on "$on;3" && set off "$off;23"
   set --query _flag_underline && set on "$on;4" && set off "$off;24"
   set --query _flag_reverse && set on "$on;7" && set off "$off;27"
+  set --query _flag_hidden && set on "$on;8" && set off "$off;28"
+  set --query _flag_strikethrough && set on "$on;9" && set off "$off;29"
   if set --query _flag_background
     set --query _flag_black && set on "$on;40" && set off "$off;49"
     set --query _flag_red && set on "$on;41" && set off "$off;49"
@@ -47,7 +49,7 @@ function ansi-escape --description 'Print message with ansi escape'
   not set --query NO_COLOR && test -n "$off" && printf '\x1b[%sm' (string sub --start 2 -- $off)
 end
 
-for flag in background bold dim italics reverse underline black red green yellow blue magenta cyan white brblack brred brgreen bryellow brblue brmagenta brcyan brwhite
+for flag in background bold dim hidden italics reverse strikethrough underline black red green yellow blue magenta cyan white brblack brred brgreen bryellow brblue brmagenta brcyan brwhite
   function $flag --inherit-variable flag
     ansi-escape --$flag $argv
   end
