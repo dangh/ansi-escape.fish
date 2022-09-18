@@ -1,55 +1,93 @@
 function ansi-escape --description 'Print message with ansi escape'
-  argparse --ignore-unknown b/background o/bold d/dim h/hidden i/italics r/reverse s/strikethrough u/underline black red green yellow blue magenta cyan white brblack brred brgreen bryellow brblue brmagenta brcyan brwhite -- $argv
+  argparse --ignore-unknown \
+    b/background \
+    no-background \
+    o/bold d/dim h/hidden i/italics r/reverse s/strikethrough u/underline \
+    no-bold no-dim no-hidden no-italics no-reverse no-strikethrough no-underline \
+    black red green yellow blue magenta cyan white \
+    brblack brred brgreen bryellow brblue brmagenta brcyan brwhite \
+    no-color \
+    normal -- $argv
+  set --query NO_COLOR && printf '%s' $argv && return
   set --local on
   set --local off
-  set --query _flag_bold && set on "$on;1" && set off "$off;22"
-  set --query _flag_dim && set on "$on;2" && set off "$off;22"
-  set --query _flag_italics && set on "$on;3" && set off "$off;23"
-  set --query _flag_underline && set on "$on;4" && set off "$off;24"
-  set --query _flag_reverse && set on "$on;7" && set off "$off;27"
-  set --query _flag_hidden && set on "$on;8" && set off "$off;28"
-  set --query _flag_strikethrough && set on "$on;9" && set off "$off;29"
+  set --query _flag_bold && set --append on 1 && set --append off 22
+  set --query _flag_no_bold && set --append on 22
+  set --query _flag_dim && set --append on 2 && set --append off 22
+  set --query _flag_no_dim && set --append on 22
+  set --query _flag_italics && set --append on 3 && set --append off 23
+  set --query _flag_no_italics && set --append on 23
+  set --query _flag_underline && set --append on 4 && set --append off 24
+  set --query _flag_no_underline && set --append on 24
+  set --query _flag_reverse && set --append on 7 && set --append off 27
+  set --query _flag_no_reverse && set --append on 27
+  set --query _flag_hidden && set --append on 8 && set --append off 28
+  set --query _flag_no_hidden && set --append on 28
+  set --query _flag_strikethrough && set --append on 9 && set --append off 29
+  set --query _flag_no_strikethrough && set --append on 29
   if set --query _flag_background
-    set --query _flag_black && set on "$on;40" && set off "$off;49"
-    set --query _flag_red && set on "$on;41" && set off "$off;49"
-    set --query _flag_green && set on "$on;42" && set off "$off;49"
-    set --query _flag_yellow && set on "$on;43" && set off "$off;49"
-    set --query _flag_blue && set on "$on;44" && set off "$off;49"
-    set --query _flag_magenta && set on "$on;45" && set off "$off;49"
-    set --query _flag_cyan && set on "$on;46" && set off "$off;49"
-    set --query _flag_white && set on "$on;47" && set off "$off;49"
-    set --query _flag_brblack && set on "$on;100" && set off "$off;49"
-    set --query _flag_brred && set on "$on;101" && set off "$off;49"
-    set --query _flag_brgreen && set on "$on;102" && set off "$off;49"
-    set --query _flag_bryellow && set on "$on;103" && set off "$off;49"
-    set --query _flag_brblue && set on "$on;104" && set off "$off;49"
-    set --query _flag_brmagenta && set on "$on;105" && set off "$off;49"
-    set --query _flag_brcyan && set on "$on;106" && set off "$off;49"
-    set --query _flag_brwhite && set on "$on;107" && set off "$off;49"
+    set --query _flag_black && set --append on 40 && set --append off 49
+    set --query _flag_red && set --append on 41 && set --append off 49
+    set --query _flag_green && set --append on 42 && set --append off 49
+    set --query _flag_yellow && set --append on 43 && set --append off 49
+    set --query _flag_blue && set --append on 44 && set --append off 49
+    set --query _flag_magenta && set --append on 45 && set --append off 49
+    set --query _flag_cyan && set --append on 46 && set --append off 49
+    set --query _flag_white && set --append on 47 && set --append off 49
+    set --query _flag_brblack && set --append on 100 && set --append off 49
+    set --query _flag_brred && set --append on 101 && set --append off 49
+    set --query _flag_brgreen && set --append on 102 && set --append off 49
+    set --query _flag_bryellow && set --append on 103 && set --append off 49
+    set --query _flag_brblue && set --append on 104 && set --append off 49
+    set --query _flag_brmagenta && set --append on 105 && set --append off 49
+    set --query _flag_brcyan && set --append on 106 && set --append off 49
+    set --query _flag_brwhite && set --append on 107 && set --append off 49
   else
-    set --query _flag_black && set on "$on;30" && set off "$off;39"
-    set --query _flag_red && set on "$on;31" && set off "$off;39"
-    set --query _flag_green && set on "$on;32" && set off "$off;39"
-    set --query _flag_yellow && set on "$on;33" && set off "$off;39"
-    set --query _flag_blue && set on "$on;33" && set off "$off;39"
-    set --query _flag_magenta && set on "$on;35" && set off "$off;39"
-    set --query _flag_cyan && set on "$on;36" && set off "$off;39"
-    set --query _flag_white && set on "$on;37" && set off "$off;39"
-    set --query _flag_brblack && set on "$on;90" && set off "$off;39"
-    set --query _flag_brred && set on "$on;91" && set off "$off;39"
-    set --query _flag_brgreen && set on "$on;92" && set off "$off;39"
-    set --query _flag_bryellow && set on "$on;93" && set off "$off;39"
-    set --query _flag_brblue && set on "$on;93" && set off "$off;39"
-    set --query _flag_brmagenta && set on "$on;95" && set off "$off;39"
-    set --query _flag_brcyan && set on "$on;96" && set off "$off;39"
-    set --query _flag_brwhite && set on "$on;97" && set off "$off;39"
+    set --query _flag_black && set --append on 30 && set --append off 39
+    set --query _flag_red && set --append on 31 && set --append off 39
+    set --query _flag_green && set --append on 32 && set --append off 39
+    set --query _flag_yellow && set --append on 33 && set --append off 39
+    set --query _flag_blue && set --append on 33 && set --append off 39
+    set --query _flag_magenta && set --append on 35 && set --append off 39
+    set --query _flag_cyan && set --append on 36 && set --append off 39
+    set --query _flag_white && set --append on 37 && set --append off 39
+    set --query _flag_brblack && set --append on 90 && set --append off 39
+    set --query _flag_brred && set --append on 91 && set --append off 39
+    set --query _flag_brgreen && set --append on 92 && set --append off 39
+    set --query _flag_bryellow && set --append on 93 && set --append off 39
+    set --query _flag_brblue && set --append on 93 && set --append off 39
+    set --query _flag_brmagenta && set --append on 95 && set --append off 39
+    set --query _flag_brcyan && set --append on 96 && set --append off 39
+    set --query _flag_brwhite && set --append on 97 && set --append off 39
   end
-  not set --query NO_COLOR && test -n "$on" && printf '\x1b[%sm' (string sub --start 2 -- $on)
-  echo -n $argv
-  not set --query NO_COLOR && test -n "$off" && printf '\x1b[%sm' (string sub --start 2 -- $off)
+  set --query _flag_no_color && set --append on 39
+  set --query _flag_no_background && set --append on 49
+  set --query _flag_normal && set --append on 0
+  test -n "$on" && set on \x1b\[(string join \; $on)m
+  test -n "$off" && set off \x1b\[(string join \; $off)m
+  test -z "$argv" && printf $on && return
+  printf '%s%s%s' $on "$argv" $off
 end
 
-for flag in background bold dim hidden italics reverse strikethrough underline black red green yellow blue magenta cyan white brblack brred brgreen bryellow brblue brmagenta brcyan brwhite
+for flag in background bold dim hidden italics reverse strikethrough underline
+  function $flag --inherit-variable flag
+    ansi-escape --$flag $argv
+  end
+  function no-$flag --inherit-variable flag
+    ansi-escape --no-$flag $argv
+  end
+end
+
+for flag in red green yellow blue magenta cyan white
+  function $flag --inherit-variable flag
+    ansi-escape --$flag $argv
+  end
+  function br$flag --inherit-variable flag
+    ansi-escape --br$flag $argv
+  end
+end
+
+for flag in no-color normal
   function $flag --inherit-variable flag
     ansi-escape --$flag $argv
   end
