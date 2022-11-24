@@ -65,8 +65,16 @@ function ansi-escape -d 'Print message with ansi escape'
   set -q _flag_normal && set -a on 0
   test -n "$on" && set on \x1b\[(string join \; $on)m
   test -n "$off" && set off \x1b\[(string join \; $off)m
-  test -z "$argv" && printf $on && return
-  printf '%s%s%s' $on "$argv" $off
+  set -l text
+  begin
+    if not isatty stdin
+      read -z text
+    else
+      set text "$argv"
+    end
+  end
+  echo -n $on
+  test -n "$text" && echo -n "$text$off"
 end
 
 for flag in background bold dim hidden italics reverse strikethrough underline
