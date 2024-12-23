@@ -86,7 +86,7 @@ for flag in background bold dim hidden italics reverse strikethrough underline
     end
 end
 
-for flag in red green yellow blue magenta cyan white
+for flag in black red green yellow blue magenta cyan white
     function $flag -V flag
         ansi-escape --$flag $argv
     end
